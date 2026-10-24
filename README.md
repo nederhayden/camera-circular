@@ -28,6 +28,25 @@ O instalador sai em `dist/Camera Circular-<versão>-arm64.dmg` (Mac com Apple Si
 - Para Mac Intel, troque `arch` em `build.mac.target` do `package.json` por `x64` (ou `universal`).
 - O ícone é gerado de `build/icon.svg`; o PNG usado no build é `build/icon.png` (1024×1024, fundo transparente).
 
+## Publicar uma atualização
+
+O app instalado procura versões novas nas [Releases](https://github.com/nederhayden/camera-circular/releases) deste repositório, 15 segundos depois de abrir e a cada 6 horas. Ele baixa em segundo plano e **nunca reinicia sozinho** (você pode estar gravando): o ícone da barra vira 📷↑ e o menu mostra **Reiniciar para atualizar**. Se você não escolher, a versão nova entra na próxima vez que o app for fechado. Também há **Verificar atualizações** no menu.
+
+Para lançar uma versão:
+
+1. Suba o `version` no `package.json` (por exemplo `0.2.0` → `0.2.1`) e faça o commit/push.
+2. Rode:
+
+```bash
+npm run release
+```
+
+Isso gera o app, cria a Release `vX.Y.Z` no GitHub e envia o `.dmg`, o `.zip` e o `latest-mac.yml`. O `.zip` e o `latest-mac.yml` são o que os apps instalados usam para se atualizar; o `.dmg` é para instalar do zero. Use o token do `gh` (precisa estar logado).
+
+- A atualização só vale se a nova versão for assinada com o **mesmo certificado** da instalada. O certificado "Apple Development" atual vence em **08/06/2027**; depois disso é preciso reinstalar à mão (ou usar um "Developer ID", da conta paga da Apple).
+- A primeira versão com atualização automática (0.2.0) precisa ser instalada à mão uma vez. Versões anteriores não sabem se atualizar.
+- Rodando com `npm start` o app não procura atualizações; só o app instalado procura.
+
 ## Como usar
 
 | Ação | Como fazer |

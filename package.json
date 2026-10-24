@@ -1,17 +1,24 @@
 {
   "name": "camera-circular",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Câmera flutuante para gravar tutoriais no Mac: círculo, quadrado ou retângulo, com borda opcional.",
   "main": "main.js",
   "private": true,
   "license": "MIT",
   "scripts": {
     "start": "electron .",
-    "dist": "electron-builder --mac"
+    "dist": "electron-builder --mac",
+    "release": "GH_TOKEN=$(gh auth token) electron-builder --mac --publish always"
   },
   "build": {
     "appId": "com.haydentech.camera-circular",
     "productName": "Camera Circular",
+    "publish": {
+      "provider": "github",
+      "owner": "nederhayden",
+      "repo": "camera-circular",
+      "releaseType": "release"
+    },
     "directories": {
       "buildResources": "build",
       "output": "dist"
@@ -31,6 +38,10 @@
         {
           "target": "dmg",
           "arch": "arm64"
+        },
+        {
+          "target": "zip",
+          "arch": "arm64"
         }
       ],
       "extendInfo": {
@@ -42,5 +53,8 @@
   "devDependencies": {
     "electron": "^45.0.0",
     "electron-builder": "^26.15.3"
+  },
+  "dependencies": {
+    "electron-updater": "^6.8.11"
   }
 }

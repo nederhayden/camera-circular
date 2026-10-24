@@ -5,6 +5,7 @@ const {
   BrowserWindow,
   Tray,
   Menu,
+  dialog,
   ipcMain,
   screen,
   nativeImage,
@@ -78,9 +79,15 @@ const appearance = () => ({
   borderColor: settings.borderColor,
 });
 
+const FIRST_UPDATE_CHECK_DELAY = 15 * 1000;
+const UPDATE_CHECK_INTERVAL = 6 * 60 * 60 * 1000;
+
 let win = null;
 let settingsWin = null;
 let tray = null;
+let autoUpdater = null; // só existe no app instalado; em `npm start` fica nulo
+let updateState = { status: 'idle', version: null }; // idle | downloading | ready
+let manualUpdateCheck = false;
 let settings = { ...DEFAULT_SETTINGS };
 let cameras = [];
 let activeCameraId = null;
@@ -316,6 +323,73 @@ function openSettingsWindow() {
 }
 
 // ---------------------------------------------------------------------------
+// Atualização automática (Releases do GitHub)
+// A atualização nunca reinicia o app sozinha: o usuário pode estar gravando.
+// Ela é instalada pelo menu ou, no mais tardar, quando o app for fechado.
+// ---------------------------------------------------------------------------
+
+function setUpdateState(next) {
+  updateState = { ...updateState, ...next };
+  buildTrayMenu();
+}
+
+function showUpdateMessage(type, message) {
+  if (!manualUpdateCheck) return;
+  manualUpdateCheck = false;
+  dialog.showMessageBox({ type, message, buttons: ['OK'] });
+}
+
+function checkForUpdates(manual = false) {
+  if (!autoUpdater || updateState.status !== 'idle') return;
+  manualUpdateCheck = manual;
+  autoUpdater.checkForUpdates().catch(() => {
+    /* o evento 'error' já trata e informa */
+  });
+}
+
+function setupUpdater() {
+  if (!app.isPackaged) return;
+
+  ({ autoUpdater } = require('electron-updater'));
+  autoUpdater.autoDownload = true;
+  autoUpdater.autoInstallOnAppQuit = true;
+
+  autoUpdater.on('update-available', (info) => {
+    manualUpdateCheck = false;
+    setUpdateState({ status: 'downloading', version: info.version });
+  });
+  autoUpdater.on('update-not-available', () => {
+    showUpdateMessage('info', `Você já está na versão mais recente (${app.getVersion()}).`);
+  });
+  autoUpdater.on('update-downloaded', (info) => {
+    setUpdateState({ status: 'ready', version: info.version });
+  });
+  autoUpdater.on('error', (err) => {
+    console.error('Falha ao atualizar:', err?.message);
+    if (updateState.status === 'downloading') setUpdateState({ status: 'idle', version: null });
+    showUpdateMessage('error', 'Não foi possível verificar as atualizações. Tente de novo mais tarde.');
+  });
+
+  setTimeout(() => checkForUpdates(), FIRST_UPDATE_CHECK_DELAY);
+  setInterval(() => checkForUpdates(), UPDATE_CHECK_INTERVAL);
+}
+
+function updateMenuItems() {
+  const items = [{ label: `Versão ${app.getVersion()}`, enabled: false }];
+  if (updateState.status === 'ready') {
+    items.push({
+      label: `Reiniciar para atualizar (v${updateState.version})`,
+      click: () => autoUpdater.quitAndInstall(),
+    });
+  } else if (updateState.status === 'downloading') {
+    items.push({ label: `Baixando a versão ${updateState.version}…`, enabled: false });
+  } else if (autoUpdater) {
+    items.push({ label: 'Verificar atualizações', click: () => checkForUpdates(true) });
+  }
+  return items;
+}
+
+// ---------------------------------------------------------------------------
 // Ícone na barra de menus
 // ---------------------------------------------------------------------------
 
@@ -385,12 +459,15 @@ function menuTemplate() {
     },
     { label: 'Câmera', submenu: cameraItems },
     { type: 'separator' },
+    ...updateMenuItems(),
+    { type: 'separator' },
     { label: 'Sair', role: 'quit' },
   ];
 }
 
 function buildTrayMenu() {
   if (!tray) return;
+  tray.setTitle(updateState.status === 'ready' ? '📷↑' : '📷');
   tray.setContextMenu(Menu.buildFromTemplate(menuTemplate()));
 }
 
@@ -493,6 +570,7 @@ if (!app.requestSingleInstanceLock()) {
     await ensureCameraAccess();
     createWindow();
     createTray();
+    setupUpdater();
   });
 
   // App de barra de menus: continua rodando mesmo sem janela.
