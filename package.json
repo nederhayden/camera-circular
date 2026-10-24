@@ -1,0 +1,14 @@
+{
+  "name": "camera-circular",
+  "version": "0.1.0",
+  "description": "Câmera circular flutuante para gravar tutoriais no Mac: arraste para mover, arraste a alça ou use o scroll para redimensionar.",
+  "main": "main.js",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "start": "electron ."
+  },
+  "devDependencies": {
+    "electron": "^45.0.0"
+  }
+}

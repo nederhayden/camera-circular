@@ -1,0 +1,134 @@
+:root {
+  --ring: 4px;
+  --ring-color: #ffffff;
+  --grip: 28px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: transparent;
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+#frame {
+  position: absolute;
+  inset: 0;
+}
+
+#shape {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #111;
+  border: var(--ring) solid var(--ring-color);
+  cursor: grab;
+}
+
+html[data-shape='circle'] #shape {
+  border-radius: 50%;
+}
+
+#shape:active {
+  cursor: grabbing;
+}
+
+#cam {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  pointer-events: none;
+}
+
+#cam.mirror {
+  transform: scaleX(-1);
+}
+
+#msg {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  padding: 18%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #fff;
+  font-size: clamp(9px, 4.5vw, 14px);
+  line-height: 1.3;
+  pointer-events: none;
+}
+
+#msg[hidden] {
+  display: none;
+}
+
+/* Botões que aparecem ao passar o mouse: redimensionar (canto inferior direito) e fechar
+   (canto superior direito). No círculo ficam sobre a borda, a 45°; nas outras formas, no canto. */
+.handle {
+  position: absolute;
+  width: var(--grip);
+  height: var(--grip);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border-radius: 50%;
+  background: rgba(20, 20, 20, 0.85);
+  border: 2px solid #fff;
+  color: #fff;
+  opacity: 0;
+  transition: opacity 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+}
+
+.handle svg {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  pointer-events: none;
+}
+
+#grip {
+  right: calc(14.6% - var(--grip) / 2);
+  bottom: calc(14.6% - var(--grip) / 2);
+  cursor: nwse-resize;
+}
+
+#close {
+  right: calc(14.6% - var(--grip) / 2);
+  top: calc(14.6% - var(--grip) / 2);
+  cursor: pointer;
+}
+
+#close:hover {
+  background: #ff3b30;
+  border-color: #ff3b30;
+}
+
+html:not([data-shape='circle']) #grip {
+  right: 8px;
+  bottom: 8px;
+}
+
+html:not([data-shape='circle']) #close {
+  right: 8px;
+  top: 8px;
+}
+
+#frame:hover .handle,
+.handle:active {
+  opacity: 1;
+}

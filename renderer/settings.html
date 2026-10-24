@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; style-src 'self'; script-src 'self'"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Aparência</title>
+    <link rel="stylesheet" href="settings.css" />
+  </head>
+  <body>
+    <section>
+      <h2>Forma</h2>
+      <div class="segmented" id="shapes" role="radiogroup" aria-label="Forma">
+        <button type="button" role="radio" data-shape="circle">Círculo</button>
+        <button type="button" role="radio" data-shape="square">Quadrado</button>
+        <button type="button" role="radio" data-shape="rectangle">Retângulo</button>
+      </div>
+    </section>
+
+    <section>
+      <label class="row">
+        <h2>Borda</h2>
+        <input type="checkbox" id="border-enabled" />
+      </label>
+
+      <div id="border-options">
+        <label class="field">
+          <span>Espessura</span>
+          <input type="range" id="border-width" min="1" max="16" step="1" />
+          <output id="border-width-value"></output>
+        </label>
+
+        <div class="field">
+          <span>Cor</span>
+          <input type="color" id="border-color" aria-label="Cor da borda" />
+        </div>
+
+        <div class="swatches" id="swatches" aria-label="Cores prontas"></div>
+      </div>
+    </section>
+    <script src="settings.js"></script>
+  </body>
+</html>

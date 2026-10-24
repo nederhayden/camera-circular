@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; img-src 'self' data:; media-src 'self' blob: mediastream:; style-src 'self'; script-src 'self'"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Câmera Circular</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div id="frame">
+      <div id="shape" title="Arraste para mover · Duplo clique para o tamanho padrão">
+        <video id="cam" autoplay muted playsinline></video>
+        <p id="msg" hidden></p>
+      </div>
+      <div id="grip" class="handle" title="Arraste para redimensionar">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M5 5h6M5 5v6M5 5l14 14M19 19h-6M19 19v-6" />
+        </svg>
+      </div>
+      <button id="close" class="handle" type="button" title="Fechar a câmera" aria-label="Fechar a câmera">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M6 6l12 12M18 6L6 18" />
+        </svg>
+      </button>
+    </div>
+    <script src="renderer.js"></script>
+  </body>
+</html>

@@ -1,0 +1,137 @@
+:root {
+  color-scheme: dark;
+  --bg: #1e1e1e;
+  --fg: #f2f2f2;
+  --muted: #9a9a9a;
+  --line: #3a3a3a;
+  --accent: #0a84ff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 20px;
+  background: var(--bg);
+  color: var(--fg);
+  font: 13px -apple-system, BlinkMacSystemFont, sans-serif;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+section + section {
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+
+h2 {
+  margin: 0 0 10px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.row h2 {
+  margin: 0;
+}
+
+.segmented {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.segmented button {
+  padding: 8px 0;
+  border: 0;
+  border-left: 1px solid var(--line);
+  background: transparent;
+  color: var(--fg);
+  font: inherit;
+  cursor: pointer;
+}
+
+.segmented button:first-child {
+  border-left: 0;
+}
+
+.segmented button[aria-checked='true'] {
+  background: var(--accent);
+  color: #fff;
+}
+
+#border-options {
+  margin-top: 14px;
+}
+
+#border-options.disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.field {
+  display: grid;
+  grid-template-columns: 70px 1fr auto;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.field > span {
+  color: var(--muted);
+}
+
+output {
+  min-width: 36px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+input[type='range'] {
+  width: 100%;
+  accent-color: var(--accent);
+}
+
+input[type='color'] {
+  grid-column: 2;
+  width: 56px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-left: 80px;
+}
+
+.swatches button {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 2px solid var(--line);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.swatches button[aria-pressed='true'] {
+  border-color: var(--accent);
+}
