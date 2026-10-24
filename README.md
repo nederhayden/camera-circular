@@ -20,7 +20,7 @@ Na primeira execução o macOS pede permissão de câmera. Se você negou sem qu
 npm run dist
 ```
 
-O instalador sai em `dist/Camera Circular-<versão>-arm64.dmg` (Mac com Apple Silicon). Abra o `.dmg` e arraste o app para **Aplicativos**. Na primeira execução o macOS pede a permissão de câmera para o app.
+O instalador sai em `dist/Camera-Circular-<versão>-arm64.dmg` (Mac com Apple Silicon). Abra o `.dmg` e arraste o app para **Aplicativos**. Na primeira execução o macOS pede a permissão de câmera para o app.
 
 - O `electron-builder` assina com o certificado "Apple Development" que estiver no chaveiro. Ele serve para uso neste Mac; para distribuir a outras pessoas é preciso um certificado "Developer ID" e notarização.
 - A permissão de câmera do app assinado vem de `build/entitlements.mac.plist`. Sem a linha `device.camera` o macOS bloqueia a câmera em silêncio.
