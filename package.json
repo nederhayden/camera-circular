@@ -1,6 +1,6 @@
 {
   "name": "camera-circular",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Câmera flutuante para gravar tutoriais no Mac: círculo, quadrado ou retângulo, com borda opcional.",
   "main": "main.js",
   "private": true,
