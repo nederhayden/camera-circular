@@ -334,8 +334,8 @@ function selectCamera(id) {
   win?.webContents.send('camera:select', id);
 }
 
-function buildTrayMenu() {
-  if (!tray) return;
+// O mesmo menu serve ao ícone da barra de menus e ao botão/clique direito na câmera.
+function menuTemplate() {
   const visible = Boolean(win && win.isVisible());
 
   const cameraItems = cameras.length
@@ -347,7 +347,7 @@ function buildTrayMenu() {
       }))
     : [{ label: 'Nenhuma câmera encontrada', enabled: false }];
 
-  const menu = Menu.buildFromTemplate([
+  return [
     { label: visible ? 'Ocultar câmera' : 'Mostrar câmera', click: toggleVisibility },
     { type: 'separator' },
     {
@@ -386,9 +386,23 @@ function buildTrayMenu() {
     { label: 'Câmera', submenu: cameraItems },
     { type: 'separator' },
     { label: 'Sair', role: 'quit' },
-  ]);
+  ];
+}
 
-  tray.setContextMenu(menu);
+function buildTrayMenu() {
+  if (!tray) return;
+  tray.setContextMenu(Menu.buildFromTemplate(menuTemplate()));
+}
+
+// `pos` vem da página, em coordenadas da janela; sem posição, abre no cursor.
+function popupMenu(pos) {
+  if (!win || win.isDestroyed()) return;
+  const options = { window: win };
+  if (pos && Number.isFinite(pos.x) && Number.isFinite(pos.y)) {
+    options.x = Math.round(pos.x);
+    options.y = Math.round(pos.y);
+  }
+  Menu.buildFromTemplate(menuTemplate()).popup(options);
 }
 
 function createTray() {
@@ -426,6 +440,10 @@ function registerIpc() {
   ipcMain.on('win:reset', () => setSize(DEFAULT_SIZE));
 
   ipcMain.on('app:quit', () => app.quit());
+
+  ipcMain.on('menu:open', (e, pos) => {
+    if (e.sender === win?.webContents) popupMenu(pos);
+  });
 
   ipcMain.on('cameras:update', (_e, payload) => {
     if (!payload || !Array.isArray(payload.list)) return;

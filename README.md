@@ -37,8 +37,8 @@ O instalador sai em `dist/Camera Circular-<versão>-arm64.dmg` (Mac com Apple Si
 | Fechar o app | Clique no **X** que aparece no canto superior direito ao passar o mouse |
 | Redimensionar | Scroll do mouse ou pinça no trackpad sobre a câmera |
 | Tamanho padrão | Duplo clique na câmera |
-| Forma, borda, tamanhos prontos, espelhar, trocar de câmera, ocultar, sair | Ícone 📷 na barra de menus |
-| Espessura e cor da borda | Ícone 📷 › **Aparência…** |
+| Forma, borda, tamanhos prontos, espelhar, trocar de câmera, ocultar, sair | Botão de ajustes (⚙) no canto superior esquerdo da câmera, clique direito nela, ou o ícone 📷 na barra de menus (o menu é o mesmo) |
+| Espessura e cor da borda | Menu › **Aparência…** |
 
 - Formas: círculo, quadrado e retângulo 16:9. A borda pode ser ligada ou desligada; a espessura vai de 1 a 16 px e a cor é livre (há 9 cores prontas).
 - O tamanho vai de 120 a 800 px de largura; no retângulo a altura segue a proporção 16:9.

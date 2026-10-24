@@ -10,6 +10,7 @@ contextBridge.exposeInMainWorld('cameraApp', {
   resizeBy: (delta) => ipcRenderer.send('win:resize-by', delta),
   resetSize: () => ipcRenderer.send('win:reset'),
   quit: () => ipcRenderer.send('app:quit'),
+  openMenu: (x, y) => ipcRenderer.send('menu:open', { x, y }),
   updateCameras: (list, activeId) => ipcRenderer.send('cameras:update', { list, activeId }),
   onSelectCamera: (cb) => ipcRenderer.on('camera:select', (_e, id) => cb(id)),
   onAppearance: (cb) => ipcRenderer.on('appearance:changed', (_e, value) => cb(value)),

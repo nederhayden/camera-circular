@@ -72,8 +72,8 @@ html[data-shape='circle'] #shape {
   display: none;
 }
 
-/* Botões que aparecem ao passar o mouse: redimensionar (canto inferior direito) e fechar
-   (canto superior direito). No círculo ficam sobre a borda, a 45°; nas outras formas, no canto. */
+/* Botões que aparecem ao passar o mouse: ajustes (superior esquerdo), fechar (superior direito)
+   e redimensionar (inferior direito). No círculo ficam sobre a borda, a 45°; nas outras formas, no canto. */
 .handle {
   position: absolute;
   width: var(--grip);
@@ -116,6 +116,22 @@ html[data-shape='circle'] #shape {
 #close:hover {
   background: #ff3b30;
   border-color: #ff3b30;
+}
+
+#menu {
+  left: calc(14.6% - var(--grip) / 2);
+  top: calc(14.6% - var(--grip) / 2);
+  cursor: pointer;
+}
+
+#menu:hover {
+  background: #0a84ff;
+  border-color: #0a84ff;
+}
+
+html:not([data-shape='circle']) #menu {
+  left: 8px;
+  top: 8px;
 }
 
 html:not([data-shape='circle']) #grip {

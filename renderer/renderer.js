@@ -131,6 +131,17 @@ bindInteraction(grip, 'resize');
 shape.addEventListener('dblclick', () => api.resetSize());
 document.getElementById('close').addEventListener('click', () => api.quit());
 
+// Mesmo menu do ícone da barra: abre embaixo do botão ou onde o botão direito clicou.
+const menuButton = document.getElementById('menu');
+menuButton.addEventListener('click', () => {
+  const r = menuButton.getBoundingClientRect();
+  api.openMenu(r.left, r.bottom);
+});
+frame.addEventListener('contextmenu', (event) => {
+  event.preventDefault();
+  api.openMenu(event.clientX, event.clientY);
+});
+
 // ---------------------------------------------------------------------------
 // Redimensionar com scroll do mouse ou pinça no trackpad
 // ---------------------------------------------------------------------------
