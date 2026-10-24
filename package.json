@@ -1,14 +1,46 @@
 {
   "name": "camera-circular",
   "version": "0.1.0",
-  "description": "Câmera circular flutuante para gravar tutoriais no Mac: arraste para mover, arraste a alça ou use o scroll para redimensionar.",
+  "description": "Câmera flutuante para gravar tutoriais no Mac: círculo, quadrado ou retângulo, com borda opcional.",
   "main": "main.js",
   "private": true,
   "license": "MIT",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "dist": "electron-builder --mac"
+  },
+  "build": {
+    "appId": "com.haydentech.camera-circular",
+    "productName": "Camera Circular",
+    "directories": {
+      "buildResources": "build",
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "preload-settings.js",
+      "renderer/**/*"
+    ],
+    "mac": {
+      "category": "public.app-category.video",
+      "icon": "build/icon.png",
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "build/entitlements.mac.plist",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": "arm64"
+        }
+      ],
+      "extendInfo": {
+        "NSCameraUsageDescription": "A Câmera Circular usa a câmera para mostrar você na tela enquanto grava tutoriais.",
+        "LSUIElement": true
+      }
+    }
   },
   "devDependencies": {
-    "electron": "^45.0.0"
+    "electron": "^45.0.0",
+    "electron-builder": "^26.15.3"
   }
 }

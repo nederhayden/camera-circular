@@ -14,6 +14,20 @@ npm start
 
 Na primeira execução o macOS pede permissão de câmera. Se você negou sem querer, libere em **Ajustes do Sistema › Privacidade e Segurança › Câmera**.
 
+## Gerar o app instalável (.dmg)
+
+```bash
+npm run dist
+```
+
+O instalador sai em `dist/Camera Circular-<versão>-arm64.dmg` (Mac com Apple Silicon). Abra o `.dmg` e arraste o app para **Aplicativos**. Na primeira execução o macOS pede a permissão de câmera para o app.
+
+- O `electron-builder` assina com o certificado "Apple Development" que estiver no chaveiro. Ele serve para uso neste Mac; para distribuir a outras pessoas é preciso um certificado "Developer ID" e notarização.
+- A permissão de câmera do app assinado vem de `build/entitlements.mac.plist`. Sem a linha `device.camera` o macOS bloqueia a câmera em silêncio.
+- O `productName` precisa ficar **sem acento**: com "Câmera Circular" o app empacotado fecha sozinho ao abrir (Electron 45).
+- Para Mac Intel, troque `arch` em `build.mac.target` do `package.json` por `x64` (ou `universal`).
+- O ícone é gerado de `build/icon.svg`; o PNG usado no build é `build/icon.png` (1024×1024, fundo transparente).
+
 ## Como usar
 
 | Ação | Como fazer |
@@ -47,5 +61,5 @@ renderer/settings.*   janela Aparência (forma, borda, espessura, cor)
 ## Observações
 
 - Feito para macOS. O código roda em outros sistemas, mas só foi pensado para o Mac.
-- Rodando com `npm start`, o macOS associa a permissão de câmera ao Electron. Para ter um app `.app` próprio, o próximo passo é empacotar com `electron-builder` (ainda não incluído aqui).
+- Rodando com `npm start`, o macOS associa a permissão de câmera ao Electron. Já o app instalado (`.dmg`) tem a permissão própria.
 - Se a câmera aparecer preta ao iniciar o app de dentro de outro app (editor, assistente de código), é porque o macOS atribui a permissão de câmera a quem iniciou o processo. Inicie fora dele, num terminal normal, ou com `open -n node_modules/electron/dist/Electron.app --args "$PWD"`.
